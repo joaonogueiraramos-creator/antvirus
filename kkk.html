@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield - Filtro Heurístico</title>
+    <style>
+      body {
+    background: #000;
+    color: #00ff41;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .scanner-container {
+    border: 1px solid #00ff41;
+    padding: 30px; /* Aumentado */
+    width: 500px;  /* Aumentado de 350px para 500px */
+  }
+  h2 {
+    font-size: 24px; /* Aumentado */
+    margin-top: 0;
+  }
+  #status-bar {
+    border: 1px solid #00ff41;
+    height: 30px;  /* Mais alto */
+    margin: 20px 0;
+  }
+  #progress {
+    background: #00ff41;
+    height: 100%;
+    width: 0%;
+  }
+  .log {
+    height: 200px; /* Mais alto */
+    overflow-y: auto;
+    font-size: 14px; /* Fonte maior */
+    border-top: 1px solid #333;
+    padding-top: 15px;
+  }
+  button {
+    width: 100%;
+    padding: 15px; /* Botão maior */
+    background: #00ff41;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .threat { color: red; }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+</style>
+</head>
+<body>
+
+
+<div class="scanner-container">
+    <h2> SAMUEL´S ANTVIRUS</h2>
+    <p style="font-size: 13px; text-align: center;">Verificação de dados</p>
+   
+    <div id="status-bar"><div id="progress"></div></div>
+   
+    <div class="log" id="log-console">> Sistema pronto para varredura...</div>
+
+
+    <div class="stats">
+        <span>Ameaças: <b id="threat-count" style="color: #ff4141;">0</b></span>
+        <span>Filtragem: <b style="color: #00ff41;">HEURÍSTICA</b></span>
+    </div>
+
+
+    <button onclick="iniciarEscaneamento()">ESCANEAR DIRETÓRIOS</button>
+    <p>
+
+
+    </p>
+    <button id="meuBotao">PROBLEMA RESOLVIDO</button>
+
+
+</div>
+
+
+<script>
+
+
+const botao = document.getElementById('meuBotao');
+
+
+botao.addEventListener('click', function() {
+    window.location.href = 'lol.html';
+});
+
+
+    const logConsole = document.getElementById('log-console');
+    const progressBar = document.getElementById('progress');
+    const threatCountEl = document.getElementById('threat-count');
+   
+    const arquivosSimulados = [
+        { nome: "Windows_Explorer.msi", virus: false },
+        { nome: "fotos_pessoais.jpg", virus: true },
+        { nome: "extrator_de_dados.exe.vbs", virus: true },
+        { nome: "chrome_patch.exe", virus: false },
+        { nome: "senhas_salvas.jpg", virus: true },
+        { nome: "documento_financeiro.pdf", virus: false },
+        { nome: "malware_vaza_dados.py", virus: true }
+    ];
+
+
+    function log(msg, classe = '') {
+        const span = document.createElement('div');
+        span.innerHTML = `> ${msg}`;
+        if (classe) span.className = classe;
+        logConsole.appendChild(span);
+        logConsole.scrollTop = logConsole.scrollHeight;
+    }
+
+
+    async function iniciarEscaneamento() {
+        logConsole.innerHTML = "";
+        progressBar.style.width = "0%";
+        let ameacas = 0;
+        threatCountEl.innerText = ameacas;
+
+
+        for (let i = 0; i < arquivosSimulados.length; i++) {
+            let progresso = ((i + 1) / arquivosSimulados.length) * 100;
+            progressBar.style.width = progresso + "%";
+           
+            const arquivo = arquivosSimulados[i];
+            await new Promise(r => setTimeout(r, 800));
+
+
+            if (arquivo.virus) {
+                ameacas++;
+                threatCountEl.innerText = ameacas;
+                log(`Virus!!: ${arquivo.nome} (Tentativa de vazamento!)`, 'threat');
+            } else {
+                log(`Analisando: ${arquivo.nome} ok!`, 'safe');
+            }
+        }
+        log("VARREDURA COMPLETA. Com EXITO!...");
+    }
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
